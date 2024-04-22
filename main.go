@@ -12,7 +12,7 @@ type Data struct {
 
 func main() {
 	homeHandler := func(w http.ResponseWriter, req *http.Request) {
-		tmpl := template.Must(template.ParseFiles("index..gohtml"))
+		tmpl := template.Must(template.ParseFiles("index.gohtml"))
 
 		data := Data{
 			"Go setup",
