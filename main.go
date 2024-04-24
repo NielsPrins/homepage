@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 	"log"
-	"net/http"
-	"text/template"
 )
 
 type Data struct {
@@ -11,16 +11,21 @@ type Data struct {
 }
 
 func main() {
-	homeHandler := func(w http.ResponseWriter, req *http.Request) {
-		tmpl := template.Must(template.ParseFiles("index.gohtml"))
+	engine := html.New("./views", ".gohtml")
 
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+	app.Static("/public", "./public")
+
+	app.Get("/", func(c *fiber.Ctx) error {
 		data := Data{
-			"Go setup",
+			Title: "Go setup",
 		}
 
-		tmpl.Execute(w, data)
-	}
+		return c.Render("index", data)
+	})
 
-	http.HandleFunc("/", homeHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(app.Listen(":3000"))
 }
