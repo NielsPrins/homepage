@@ -1,9 +1,10 @@
 {
   "scripts": {
     "tailwind": "tailwindcss -i ./tailwind.css -o ./public/global.css",
-    "tailwind-watch": "tailwind --watch"
+    "tailwind-watch": "tailwindcss -i ./tailwind.css -o ./public/global.css --watch"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.3"
+    "tailwindcss": "^3.4.3",
+    "@tailwindcss/forms": "^0.5.7"
   }
 }
