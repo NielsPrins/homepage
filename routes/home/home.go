@@ -11,7 +11,7 @@ type Data struct {
 func Handler(c *fiber.Ctx) error {
 
 	data := Data{
-		Title: "Go setup",
+		Title: "Go setup!!",
 	}
 
 	return c.Render("routes/home/home.gohtml", data)

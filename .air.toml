@@ -2,10 +2,10 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-cmd = "go build -o ./tmp/main ."
-bin = "./tmp/main"
-include_ext = ["go"]
-exclude_dir = ["tmp", "node_modules"]
+cmd = "go build -o ./.tmp/main ."
+bin = "./.tmp/main"
+include_ext = ["go", "css"]
+exclude_dir = [".tmp", "node_modules", "dist"]
 delay = 0
 
 [log]
