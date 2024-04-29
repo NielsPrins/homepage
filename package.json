@@ -1,7 +1,7 @@
 {
   "scripts": {
     "tailwind": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --minify",
-    "tailwind-watch": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --watch"
+    "tailwind-watch": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --minify --watch"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.3",
