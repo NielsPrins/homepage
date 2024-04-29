@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "tailwind": "tailwindcss -i ./tailwind.css -o ./public/global.css",
+    "tailwind": "tailwindcss -i ./tailwind.css -o ./public/global.css --minify",
     "tailwind-watch": "tailwindcss -i ./tailwind.css -o ./public/global.css --watch"
   },
   "devDependencies": {
