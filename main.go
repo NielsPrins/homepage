@@ -27,7 +27,7 @@ func main() {
 
 	app.Get("/", home.Handler)
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":80"))
 }
 
 func getContentType(filename string) string {
