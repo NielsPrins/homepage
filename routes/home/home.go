@@ -1,13 +1,13 @@
 package home
 
 import (
-	"embed"
+	_ "embed"
 	"github.com/gofiber/fiber/v2"
 	templatehandler "homepage/common"
 )
 
 //go:embed home.gohtml
-var htmlTemplate embed.FS
+var htmlTemplate string
 
 type Data struct {
 	Title string
@@ -18,5 +18,5 @@ func Handler(c *fiber.Ctx) error {
 		Title: "Go setup",
 	}
 
-	return templatehandler.RenderTemplate(c, htmlTemplate, "home.gohtml", data)
+	return templatehandler.RenderTemplate(c, htmlTemplate, data)
 }
