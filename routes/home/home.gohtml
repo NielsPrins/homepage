@@ -9,7 +9,12 @@
 <body>
 {{- /* gotype: homepage/routes/home.Data */ -}}
 
-<h1>{{ .Title }}</h1>
+{{range  .Shortcuts}}
+    {{ .ID }}<br>
+    {{ .URL }}<br>
+    {{ .Name }}<br>
+    {{ .ImageURL }}<br><br><br>
+{{end}}
 
 <div class="bg-yellow-800 text-white p-4 rounded-xl">
     <p>In home</p>

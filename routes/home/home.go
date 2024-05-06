@@ -10,12 +10,14 @@ import (
 var htmlTemplate string
 
 type Data struct {
-	Title string
+	Shortcuts common.Shortcuts
 }
 
 func Handler(c *fiber.Ctx) error {
+	shortcuts, _ := common.GetAllShortcuts()
+
 	data := Data{
-		Title: "Go setup",
+		Shortcuts: shortcuts,
 	}
 
 	return common.RenderTemplate(c, htmlTemplate, data)
