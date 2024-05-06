@@ -1,4 +1,4 @@
-package templatehandler
+package common
 
 import (
 	"github.com/gofiber/fiber/v2"

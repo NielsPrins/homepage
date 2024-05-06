@@ -3,7 +3,7 @@ package home
 import (
 	_ "embed"
 	"github.com/gofiber/fiber/v2"
-	templatehandler "homepage/common"
+	"homepage/common"
 )
 
 //go:embed home.gohtml
@@ -18,5 +18,5 @@ func Handler(c *fiber.Ctx) error {
 		Title: "Go setup",
 	}
 
-	return templatehandler.RenderTemplate(c, htmlTemplate, data)
+	return common.RenderTemplate(c, htmlTemplate, data)
 }
