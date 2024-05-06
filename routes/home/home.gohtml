@@ -33,7 +33,7 @@
 
     <div class="grid grid-cols-auto-fit-minmax-8rem gap-6 max-w-full md:max-w-2xl justify-self-center">
         {{ range  .Shortcuts }}
-            <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus:ring-blue-500 focus:ring-2 focus:outline-none"
+            <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
                href="{{ .URL }}">
                 <img class="w-6 h-6" src="{{ .ImageURL }}" alt="{{ .ImageURL }}">
                 {{ .Name }}
