@@ -47,7 +47,7 @@
     searchInput.addEventListener("keydown", function (e) {
         if (e.key !== "Enter") return;
         const searchValue = this.value;
-        window.location.href = `https://www.google.com/search?q=${searchValue}`;
+        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(searchValue)}`;
     });
 
     document.addEventListener('keydown', function (e) {
