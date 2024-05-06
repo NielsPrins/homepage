@@ -6,20 +6,52 @@
     <title>Page Title</title>
     <link rel="stylesheet" href="/public/global.min.css">
 </head>
-<body>
+<body class="bg-neutral-700 text-white absolute inset-0 grid place-items-center">
+
 {{- /* gotype: homepage/routes/home.Data */ -}}
 
-{{range  .Shortcuts}}
-    {{ .ID }}<br>
-    {{ .URL }}<br>
-    {{ .Name }}<br>
-    {{ .ImageURL }}<br><br><br>
-{{end}}
+<div class="grid gap-2 p-4">
+    <div>
 
-<div class="bg-yellow-800 text-white p-4 rounded-xl">
-    <p>In home</p>
+        <div class="flex items-center rounded-lg border bg-white text-black">
+            <svg class="w-4 h-4 ml-4 fill-current text-neutral-500"
+                 viewBox="0 0 20 20"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="m8.5 3c3.0375661 0 5.5 2.46243388 5.5 5.5 0 1.24832096-.4158777 2.3995085-1.1166416 3.3225711l4.1469717 4.1470988c.2928932.2928932.2928932.767767 0 1.0606602-.2662666.2662665-.6829303.2904726-.9765418.0726181l-.0841184-.0726181-4.1470988-4.1469717c-.9230626.7007639-2.07425014 1.1166416-3.3225711 1.1166416-3.03756612 0-5.5-2.4624339-5.5-5.5 0-3.03756612 2.46243388-5.5 5.5-5.5zm0 1.5c-2.209139 0-4 1.790861-4 4s1.790861 4 4 4 4-1.790861 4-4-1.790861-4-4-4z"></path>
+            </svg>
+
+            <input
+                    id="search"
+                    name="search"
+                    class="w-full rounded-lg border-0 py-1.5 pr-10 text-sm focus:outline-none focus:ring-0"
+                    placeholder="Search"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    autofocus
+            >
+        </div>
+    </div>
+
+    <div class="flex gap-2">
+        {{ range  .Shortcuts }}
+            <div class="bg-neutral-600 p-4 rounded-md">
+                {{ .ID }}<br>
+                {{ .URL }}<br>
+                {{ .Name }}<br>
+                {{ .ImageURL }}<br>
+            </div>
+        {{ end }}
+    </div>
 </div>
 
+<script>
+    const searchInput = document.getElementById("search");
+    searchInput.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter") return;
+        const searchValue = this.value;
+        window.location.href = `https://www.google.com/search?q=${searchValue}`;
+    });
+</script>
 </body>
 </html>
 
