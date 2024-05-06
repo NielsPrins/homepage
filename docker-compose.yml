@@ -1,0 +1,11 @@
+services:
+  homepage:
+    build: .
+    container_name: homepage
+    ports:
+      - 80:80
+    volumes:
+      - data:/usr/src/app/data
+
+volumes:
+  data:

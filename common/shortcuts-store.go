@@ -19,7 +19,7 @@ type Shortcut struct {
 
 type Shortcuts []Shortcut
 
-const DataFilePath = "shortcuts.json"
+const DataFilePath = "data/shortcuts.json"
 
 var ErrShortcutNotFound = errors.New("shortcut not found")
 

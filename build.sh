@@ -1,8 +1,12 @@
 #!/bin/bash
 
-npm run tailwind
+if [[ $1 == "--linux-only" ]]; then
+    PLATFORMS=("linux")
+else
+    PLATFORMS=("darwin" "linux" "windows")
+fi
 
-PLATFORMS=("darwin" "linux" "windows")
+npm run tailwind
 
 mkdir -p dist
 

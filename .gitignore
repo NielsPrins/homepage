@@ -3,4 +3,5 @@
 node_modules/
 .tmp/
 dist/
-shortcuts.json
+docker-compose.prod.yml
+data/

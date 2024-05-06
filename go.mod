@@ -1,6 +1,6 @@
 module homepage
 
-go 1.22.2
+go 1.21.9
 
 require github.com/gofiber/fiber/v2 v2.52.4
 
