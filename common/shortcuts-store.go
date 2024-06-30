@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"os"
 	"sort"
+	"strings"
 )
 
 type Shortcut struct {
@@ -69,10 +70,27 @@ func saveShortcuts(shortcuts Shortcuts) error {
 	return os.WriteFile(DataFilePath, data, 0644)
 }
 
-func AddShortcut(url, name, imageURL string) (string, error) {
+func ensureValidUrl(url string) string {
+	if strings.HasPrefix(url, "http://") {
+		return url
+	}
+	if !strings.HasPrefix(url, "https://") {
+		return "https://" + url
+	}
+	return url
+}
+
+func AddShortcut(url string, name string) (string, error) {
 	shortcuts, err := loadShortcuts()
 	if err != nil {
 		return "", fmt.Errorf("failed to load shortcuts: %w", err)
+	}
+
+	url = ensureValidUrl(url)
+
+	imageUrl, err := GetImageForShortcut(url)
+	if err != nil {
+		return "", fmt.Errorf("failed to get image url: %w", err)
 	}
 
 	id := uuid.New().String()
@@ -81,7 +99,7 @@ func AddShortcut(url, name, imageURL string) (string, error) {
 		ID:       id,
 		URL:      url,
 		Name:     name,
-		ImageURL: imageURL,
+		ImageURL: imageUrl,
 		OrderNum: len(shortcuts) + 1,
 	}
 	shortcuts = append(shortcuts, newShortcut)
@@ -94,6 +112,8 @@ func EditShortcut(id, url, name, imageURL string, order int) error {
 	if err != nil {
 		return fmt.Errorf("failed to load shortcuts: %w", err)
 	}
+
+	url = ensureValidUrl(url)
 
 	for i, shortcut := range shortcuts {
 		if shortcut.ID == id {

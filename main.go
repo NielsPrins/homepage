@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"github.com/gofiber/fiber/v2"
+	"homepage/routes/add"
 	"homepage/routes/home"
 	"log"
 	"strings"
@@ -26,6 +27,8 @@ func main() {
 	})
 
 	app.Get("/", home.Handler)
+	app.Get("/add", add.Handler)
+	app.Post("/add", add.PostHandler)
 
 	log.Fatal(app.Listen(":80"))
 }
