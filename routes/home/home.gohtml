@@ -40,21 +40,45 @@
             </a>
         {{ end }}
 
-        {{ if eq (len .Shortcuts) 0 }}
-            <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-               href="/add">
-                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
-                </svg>
-                Add
-            </a>
-        {{ end }}
+        <a id="add-shortcut"
+           class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+           href="/add"
+           hidden>
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+            </svg>
+            Add
+        </a>
     </div>
 </div>
 
-<script>
+<button
+        id="edit-homepage"
+        type="button"
+        class="fixed right-4 bottom-4 flex gap-2 items-center cursor-pointer bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+        hidden
+>
+    <svg class="w-5 h-5 fill-current"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 24 24"
+    >
+        <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
+    </svg>
+    Edit homepage
+</button>
+
+<script type="module">
+    import {isMacOs} from "/public/global.js";
+
     /** @type {HTMLInputElement} */
     const searchInput = document.getElementById("search");
+
+    /** @type {HTMLButtonElement} */
+    const editHomepageButton = document.getElementById("edit-homepage");
+
+    /** @type {HTMLAnchorElement} */
+    const addShortcutButton = document.getElementById("add-shortcut");
+
     searchInput.addEventListener("keydown", function (e) {
         if (e.key !== "Enter") return;
         const searchValue = this.value;
@@ -65,6 +89,37 @@
         if (e.key !== "/") return;
         e.preventDefault();
         searchInput.focus();
+    });
+
+    let metaHoldTimer = null;
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key !== (isMacOs() ? "Meta" : "Control")) return;
+        if (metaHoldTimer !== null) return;
+        if (!editHomepageButton.hidden || !addShortcutButton.hidden) return;
+
+        metaHoldTimer = window.setTimeout(function () {
+            metaHoldTimer = null;
+            editHomepageButton.hidden = false;
+        }, 3000);
+    });
+
+    document.addEventListener("keyup", function (e) {
+        if (e.key !== (isMacOs() ? "Meta" : "Control")) return;
+        if (metaHoldTimer === null) return;
+        window.clearTimeout(metaHoldTimer);
+        metaHoldTimer = null;
+    });
+
+    window.addEventListener("blur", function () {
+        if (metaHoldTimer === null) return;
+        window.clearTimeout(metaHoldTimer);
+        metaHoldTimer = null;
+    });
+
+    editHomepageButton.addEventListener("click", function () {
+        addShortcutButton.hidden = false;
+        editHomepageButton.hidden = true;
     });
 </script>
 </body>
