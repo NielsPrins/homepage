@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 
@@ -58,12 +59,26 @@ func loadShortcuts() (Shortcuts, error) {
 }
 
 func createEmptyJSONFile(filePath string) error {
+	err := ensureParentDir(filePath)
+	if err != nil {
+		return err
+	}
+
 	emptyData := []byte("[]")
-	err := os.WriteFile(filePath, emptyData, 0644)
+	err = os.WriteFile(filePath, emptyData, 0644)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func ensureParentDir(filePath string) error {
+	dir := filepath.Dir(filePath)
+	if dir == "." || dir == "" {
+		return nil
+	}
+
+	return os.MkdirAll(dir, 0755)
 }
 
 func saveShortcuts(shortcuts Shortcuts) error {
