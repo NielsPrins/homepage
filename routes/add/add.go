@@ -2,8 +2,9 @@ package add
 
 import (
 	_ "embed"
-	"github.com/gofiber/fiber/v2"
 	"homepage/common"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 //go:embed add.gohtml

@@ -1,8 +1,9 @@
 package common
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"html/template"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func RenderTemplate(c *fiber.Ctx, htmlTemplate string, data any) error {

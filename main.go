@@ -2,11 +2,12 @@ package main
 
 import (
 	"embed"
-	"github.com/gofiber/fiber/v2"
 	"homepage/routes/add"
 	"homepage/routes/home"
 	"log"
 	"strings"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 //go:embed public

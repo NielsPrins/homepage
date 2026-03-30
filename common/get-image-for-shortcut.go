@@ -2,9 +2,10 @@ package common
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
 	"net/http"
 	"net/url"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func GetImageForShortcut(pageURL string) (string, error) {
@@ -13,17 +14,20 @@ func GetImageForShortcut(pageURL string) (string, error) {
 		return "", fmt.Errorf("invalid URL: %v", err)
 	}
 
-	resp, err := http.Get(pageURL)
+	res, err := http.Get(pageURL)
 	if err != nil {
 		return "", fmt.Errorf("failed to fetch the page: %v", err)
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("bad status: %s", resp.Status)
+	defer func() {
+		_ = res.Body.Close()
+	}()
+
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("bad status: %s", res.Status)
 	}
 
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
+	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
 		return "", fmt.Errorf("failed to parse the page: %v", err)
 	}

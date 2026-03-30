@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
 	"os"
 	"sort"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 type Shortcut struct {
@@ -37,7 +38,10 @@ func loadShortcuts() (Shortcuts, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file: %w", err)
 	}
-	defer file.Close()
+
+	defer func() {
+		_ = file.Close()
+	}()
 
 	var shortcuts Shortcuts
 	data, err := os.ReadFile(DataFilePath)
@@ -71,7 +75,8 @@ func saveShortcuts(shortcuts Shortcuts) error {
 }
 
 func ensureValidUrl(url string) string {
-	if strings.HasPrefix(url, "http://") {
+	if //goland:noinspection HttpUrlsUsage
+	strings.HasPrefix(url, "http://") {
 		return url
 	}
 	if !strings.HasPrefix(url, "https://") {
