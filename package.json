@@ -5,7 +5,7 @@
     "tailwind-watch": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --minify --watch"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.3",
-    "@tailwindcss/forms": "^0.5.7"
+    "@tailwindcss/forms": "^0.5.11",
+    "tailwindcss": "^4.2.2"
   }
 }
