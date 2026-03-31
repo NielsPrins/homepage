@@ -34,11 +34,24 @@
 
     <div class="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-6 max-w-full md:max-w-2xl justify-self-center">
         {{ range  .Shortcuts }}
-            <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-               href="{{ .URL }}">
-                <img class="w-6 h-6" src="{{ .ImageURL }}" alt="{{ .ImageURL }}">
-                {{ .Name }}
-            </a>
+            <div class="relative">
+                <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+                   href="{{ .URL }}">
+                    <img class="w-6 h-6" src="{{ .ImageURL }}" alt="{{ .ImageURL }}">
+                    {{ .Name }}
+                </a>
+                <a
+                        href="/edit/{{ .ID }}"
+                        class="absolute right-0 top-0 -mt-2 -mr-2 p-2 bg-neutral-800 hover:bg-neutral-900 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+                        hidden>
+                    <svg class="w-4 h-4 fill-current"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                    >
+                        <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
+                    </svg>
+                </a>
+            </div>
         {{ end }}
 
         <a id="add-shortcut"
@@ -56,10 +69,9 @@
 <button
         id="edit-homepage"
         type="button"
-        class="fixed right-4 bottom-4 bg-neutral-600 hover:bg-neutral-500 px-4 py-2 rounded-md flex gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none cursor-pointer"
-        hidden
+        class="fixed right-4 bottom-4 bg-neutral-600 hover:bg-neutral-500 text-sm px-2 py-1 rounded-md flex gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none cursor-pointer"
 >
-    <svg class="w-5 h-5 fill-current"
+    <svg class="w-4 h-4 fill-current"
          xmlns="http://www.w3.org/2000/svg"
          viewBox="0 0 24 24"
     >
@@ -69,16 +81,13 @@
 </button>
 
 <script type="module">
-    import {isMacOs} from "/public/global.js";
-
     /** @type {HTMLInputElement} */
     const searchInput = document.getElementById("search");
 
-    /** @type {HTMLButtonElement} */
     const editHomepageButton = document.getElementById("edit-homepage");
 
-    /** @type {HTMLAnchorElement} */
     const addShortcutButton = document.getElementById("add-shortcut");
+    const editLinks = document.querySelectorAll('a[href^="/edit/"]');
 
     searchInput.addEventListener("keydown", function (e) {
         if (e.key !== "Enter") return;
@@ -87,40 +96,15 @@
     });
 
     document.addEventListener('keydown', function (e) {
+        if (document.activeElement === searchInput) return;
         if (e.key !== "/") return;
         e.preventDefault();
         searchInput.focus();
     });
 
-    let metaHoldTimer = null;
-
-    document.addEventListener("keydown", function (e) {
-        if (e.key !== (isMacOs() ? "Meta" : "Control")) return;
-        if (metaHoldTimer !== null) return;
-        if (!editHomepageButton.hidden || !addShortcutButton.hidden) return;
-
-        metaHoldTimer = window.setTimeout(function () {
-            metaHoldTimer = null;
-            editHomepageButton.hidden = false;
-        }, 3000);
-    });
-
-    document.addEventListener("keyup", function (e) {
-        if (e.key !== (isMacOs() ? "Meta" : "Control")) return;
-        if (metaHoldTimer === null) return;
-        window.clearTimeout(metaHoldTimer);
-        metaHoldTimer = null;
-    });
-
-    window.addEventListener("blur", function () {
-        if (metaHoldTimer === null) return;
-        window.clearTimeout(metaHoldTimer);
-        metaHoldTimer = null;
-    });
-
     editHomepageButton.addEventListener("click", function () {
         addShortcutButton.hidden = false;
-        editHomepageButton.hidden = true;
+        editLinks.forEach((link) => link.hidden = false);
     });
 </script>
 </body>
