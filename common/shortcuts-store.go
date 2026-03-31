@@ -127,7 +127,7 @@ func AddShortcut(url string, name string) (string, error) {
 	return id, saveShortcuts(shortcuts)
 }
 
-func EditShortcut(id, url, name, imageURL string, order int) error {
+func EditShortcut(id, url, name string) error {
 	shortcuts, err := loadShortcuts()
 	if err != nil {
 		return fmt.Errorf("failed to load shortcuts: %w", err)
@@ -135,17 +135,27 @@ func EditShortcut(id, url, name, imageURL string, order int) error {
 
 	url = ensureValidUrl(url)
 
+	imageUrl, err := GetImageForShortcut(url)
+	if err != nil {
+		return fmt.Errorf("failed to get image url: %w", err)
+	}
+
+	foundShortcut := false
 	for i, shortcut := range shortcuts {
 		if shortcut.ID == id {
 			shortcuts[i].URL = url
 			shortcuts[i].Name = name
-			shortcuts[i].ImageURL = imageURL
-			shortcuts[i].OrderNum = order
-			sortShortcutsByOrder(shortcuts)
-			return saveShortcuts(shortcuts)
+			shortcuts[i].ImageURL = imageUrl
+			foundShortcut = true
+			break
 		}
 	}
-	return ErrShortcutNotFound
+	if !foundShortcut {
+		return ErrShortcutNotFound
+	}
+
+	sortShortcutsByOrder(shortcuts)
+	return saveShortcuts(shortcuts)
 }
 
 func RemoveShortcut(id string) error {

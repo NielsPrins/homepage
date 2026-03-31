@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"homepage/routes/add"
+	"homepage/routes/edit"
 	"homepage/routes/home"
 	"log"
 	"strings"
@@ -30,6 +31,8 @@ func main() {
 	app.Get("/", home.Handler)
 	app.Get("/add", add.Handler)
 	app.Post("/add", add.PostHandler)
+	app.Get("/edit/:id", edit.Handler)
+	app.Post("/edit/:id", edit.PostHandler)
 
 	log.Fatal(app.Listen(":80"))
 }
