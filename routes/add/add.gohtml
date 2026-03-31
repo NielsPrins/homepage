@@ -14,35 +14,57 @@
 <div class="grid gap-12 p-4">
     <div class="flex justify-center">
         <form
-                class="grid gap-3 max-w-sm w-full text-black"
+                class="grid gap-5 max-w-sm w-full text-black"
                 method="post"
                 action="{{ .FormAction }}"
         >
-            <input
-                    id="name"
-                    name="name"
-                    class="w-full rounded-lg border-0 py-1.5 focus:outline-none focus:ring-0"
-                    placeholder="Name"
-                    autocomplete="off"
-                    autocapitalize="off"
-                    value="{{ .Name }}"
-                    {{ if not .AutofocusURL }}autofocus{{ end }}
-            >
+            <div class="relative">
+                <input
+                        id="name"
+                        name="name"
+                        class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
+                        placeholder=" "
+                        autocomplete="off"
+                        autocapitalize="off"
+                        value="{{ .Name }}"
+                        {{ if not .AutofocusURL }}autofocus{{ end }}
+                >
+                <label
+                        for="name"
+                        class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
+                >
+                    Name
+                </label>
+            </div>
 
-            <input
-                    id="url"
-                    name="url"
-                    class="w-full rounded-lg border-0 py-1.5 focus:outline-none focus:ring-0"
-                    placeholder="URL"
-                    autocomplete="off"
-                    autocapitalize="off"
-                    value="{{ .URL }}"
-            >
+            <div class="relative">
+                <input
+                        id="url"
+                        name="url"
+                        class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
+                        placeholder=" "
+                        autocomplete="off"
+                        autocapitalize="off"
+                        value="{{ .URL }}"
+                        {{ if .AutofocusURL }}autofocus{{ end }}
+                >
+                <label
+                        for="url"
+                        class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
+                >
+                    URL
+                </label>
+            </div>
 
             <button
-                    class="bg-blue-500 text-white w-full rounded-lg border-0 py-1.5 focus:outline-none focus:ring-0 cursor-pointer"
+                    class="flex justify-center items-center text-lg gap-2 h-12 bg-blue-500 text-white w-full rounded-lg border-0 py-1.5 focus:outline-none focus:ring-0 cursor-pointer"
                     type="submit"
             >
+                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                     fill="currentColor">
+                    <path d="M18 21V13H6V21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H17L21 7V20C21 20.5523 20.5523 21 20 21H18ZM16 21H8V15H16V21Z"></path>
+                </svg>
+
                 {{ .SubmitLabel }}
             </button>
 
@@ -53,4 +75,3 @@
 
 </body>
 </html>
-
