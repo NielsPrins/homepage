@@ -113,6 +113,7 @@
     });
 
     editHomepageButton.addEventListener("click", function () {
+        editHomepageButton.hidden = true;
         addShortcutButton.hidden = false;
         editLinks.forEach((link) => link.hidden = false);
     });
