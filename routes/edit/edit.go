@@ -17,6 +17,7 @@ func Handler(c *fiber.Ctx) error {
 		Title:        "Edit",
 		SubmitLabel:  "Save",
 		FormAction:   "/edit/" + shortcut.ID,
+		RemoveAction: "/remove/" + shortcut.ID,
 		Name:         shortcut.Name,
 		URL:          shortcut.URL,
 		AutofocusURL: true,
@@ -30,6 +31,15 @@ func PostHandler(c *fiber.Ctx) error {
 	}
 
 	err = common.EditShortcut(c.Params("id"), postData.URL, postData.Name)
+	if err != nil {
+		return err
+	}
+
+	return c.Redirect("/")
+}
+
+func RemoveHandler(c *fiber.Ctx) error {
+	err := common.RemoveShortcut(c.Params("id"))
 	if err != nil {
 		return err
 	}

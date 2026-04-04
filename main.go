@@ -33,6 +33,7 @@ func main() {
 	app.Post("/add", add.PostHandler)
 	app.Get("/edit/:id", edit.Handler)
 	app.Post("/edit/:id", edit.PostHandler)
+	app.Post("/remove/:id", edit.RemoveHandler)
 
 	log.Fatal(app.Listen(":80"))
 }

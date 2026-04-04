@@ -14,6 +14,7 @@ type Data struct {
 	Title        string
 	SubmitLabel  string
 	FormAction   string
+	RemoveAction string
 	Name         string
 	URL          string
 	AutofocusURL bool
