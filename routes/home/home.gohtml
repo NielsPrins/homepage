@@ -1,85 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/public/global.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/public/global.min.css">
 </head>
 <body class="bg-neutral-700 text-white absolute inset-0 grid items-center">
 
 {{- /* gotype: homepage/routes/home.Data */ -}}
 
 <div class="grid gap-12 p-4">
-    <div class="flex justify-center">
-        <div
-                id="search-shell"
-                class="flex items-center rounded-lg bg-white text-black focus-within:w-md w-sm transition-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-4 focus-within:ring-offset-neutral-700">
-            <svg class="w-5 h-5 ml-4 fill-current text-neutral-500"
-                 viewBox="0 0 20 20"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path d="m8.5 3c3.0375661 0 5.5 2.46243388 5.5 5.5 0 1.24832096-.4158777 2.3995085-1.1166416 3.3225711l4.1469717 4.1470988c.2928932.2928932.2928932.767767 0 1.0606602-.2662666.2662665-.6829303.2904726-.9765418.0726181l-.0841184-.0726181-4.1470988-4.1469717c-.9230626.7007639-2.07425014 1.1166416-3.3225711 1.1166416-3.03756612 0-5.5-2.4624339-5.5-5.5 0-3.03756612 2.46243388-5.5 5.5-5.5zm0 1.5c-2.209139 0-4 1.790861-4 4s1.790861 4 4 4 4-1.790861 4-4-1.790861-4-4-4z"></path>
-            </svg>
+  <div class="flex justify-center">
+    <div
+            id="search-shell"
+            class="flex items-center rounded-lg bg-white text-black focus-within:w-md w-sm transition-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-4 focus-within:ring-offset-neutral-700">
+      <svg class="w-5 h-5 ml-4 fill-current text-neutral-500"
+           viewBox="0 0 20 20"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="m8.5 3c3.0375661 0 5.5 2.46243388 5.5 5.5 0 1.24832096-.4158777 2.3995085-1.1166416 3.3225711l4.1469717 4.1470988c.2928932.2928932.2928932.767767 0 1.0606602-.2662666.2662665-.6829303.2904726-.9765418.0726181l-.0841184-.0726181-4.1470988-4.1469717c-.9230626.7007639-2.07425014 1.1166416-3.3225711 1.1166416-3.03756612 0-5.5-2.4624339-5.5-5.5 0-3.03756612 2.46243388-5.5 5.5-5.5zm0 1.5c-2.209139 0-4 1.790861-4 4s1.790861 4 4 4 4-1.790861 4-4-1.790861-4-4-4z"></path>
+      </svg>
 
-            <input
-                    id="search"
-                    name="search"
-                    class="w-full rounded-lg border-0 py-1.5 pr-10 focus:outline-none focus:ring-0"
-                    placeholder="Search"
-                    autocomplete="off"
-                    autocapitalize="off"
-                    autofocus
+      <input
+              id="search"
+              name="search"
+              class="w-full rounded-lg border-0 py-1.5 pr-10 focus:outline-none focus:ring-0"
+              placeholder="Search"
+              autocomplete="off"
+              autocapitalize="off"
+              autofocus
+      >
+    </div>
+  </div>
+
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-6 max-w-full md:max-w-2xl justify-self-center">
+      {{ range  .Shortcuts }}
+        <div class="relative">
+          <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+             href="{{ .URL }}">
+            <img class="w-6 h-6" src="{{ .ImageURL }}" alt="{{ .ImageURL }}">
+              {{ .Name }}
+          </a>
+          <a
+                  href="/edit/{{ .ID }}"
+                  class="absolute right-0 top-0 -mt-2 -mr-2 p-2 bg-neutral-800 hover:bg-neutral-900 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+                  hidden>
+            <svg class="w-4 h-4 fill-current"
+                 xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
             >
-        </div>
-    </div>
-
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-6 max-w-full md:max-w-2xl justify-self-center">
-        {{ range  .Shortcuts }}
-            <div class="relative">
-                <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-                   href="{{ .URL }}">
-                    <img class="w-6 h-6" src="{{ .ImageURL }}" alt="{{ .ImageURL }}">
-                    {{ .Name }}
-                </a>
-                <a
-                        href="/edit/{{ .ID }}"
-                        class="absolute right-0 top-0 -mt-2 -mr-2 p-2 bg-neutral-800 hover:bg-neutral-900 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-                        hidden>
-                    <svg class="w-4 h-4 fill-current"
-                         xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 24 24"
-                    >
-                        <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
-                    </svg>
-                </a>
-            </div>
-        {{ end }}
-
-        <a id="add-shortcut"
-           class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-[8rem] focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-           href="/add"
-           hidden>
-            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+              <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
             </svg>
-            Add
-        </a>
-    </div>
+          </a>
+        </div>
+      {{ end }}
+
+    <a id="add-shortcut"
+       class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+       href="/add"
+       hidden>
+      <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+      </svg>
+      Add
+    </a>
+  </div>
 </div>
 
-<button
-        id="edit-homepage"
+<button id="edit-homepage"
         type="button"
         class="group fixed right-4 bottom-4 bg-neutral-600 hover:bg-neutral-500 text-sm text-gray-200 px-2 py-1 rounded-md flex items-center focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none cursor-pointer transition-all duration-300"
 >
-    <svg class="w-4 h-4 fill-current"
-         xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 24 24"
-    >
-        <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
-    </svg>
-    <span class="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 group-focus-visible:max-w-xs group-focus-visible:opacity-100 group-focus-visible:ml-2">
+  <svg class="w-4 h-4 fill-current"
+       xmlns="http://www.w3.org/2000/svg"
+       viewBox="0 0 24 24"
+  >
+    <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
+  </svg>
+  <span class="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 group-focus-visible:max-w-xs group-focus-visible:opacity-100 group-focus-visible:ml-2">
         Edit homepage
     </span>
 </button>

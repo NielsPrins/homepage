@@ -1,150 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Title }}</title>
-    <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/public/global.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }}</title>
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/public/global.min.css">
 </head>
 <body class="bg-neutral-700 text-white absolute inset-0 grid items-center">
 
 {{- /* gotype: homepage/routes/add.Data */ -}}
 
 <div class="grid gap-12 p-4">
-    <div class="flex justify-center">
-        <div class="grid gap-5 max-w-sm w-full">
-            <form
-                    class="grid gap-5 text-black"
-                    method="post"
-                    action="{{ .FormAction }}"
-            >
-                <div class="relative">
-                    <input
-                            id="name"
-                            name="name"
-                            class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
-                            placeholder=" "
-                            autocomplete="off"
-                            autocapitalize="off"
-                            value="{{ .Name }}"
-                            {{ if not .AutofocusURL }}autofocus{{ end }}
-                    >
-                    <label
-                            for="name"
-                            class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
-                    >
-                        Name
-                    </label>
-                </div>
-
-                <div class="relative">
-                    <input
-                            id="url"
-                            name="url"
-                            class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
-                            placeholder=" "
-                            autocomplete="off"
-                            autocapitalize="off"
-                            value="{{ .URL }}"
-                            {{ if .AutofocusURL }}autofocus{{ end }}
-                    >
-                    <label
-                            for="url"
-                            class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
-                    >
-                        URL
-                    </label>
-                </div>
-
-                <button
-                        class="flex justify-center items-center text-lg gap-2 h-12 bg-blue-500 text-white w-full rounded-lg border-0 py-1.5 focus:outline-none focus:ring-0 focus-visible:ring-blue-500 focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-700 cursor-pointer"
-                        type="submit"
-                >
-                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                         fill="currentColor">
-                        <path d="M7 19V13H17V19H19V7.82843L16.1716 5H5V19H7ZM4 3H17L21 7V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM9 15V19H15V15H9Z"></path>
-                    </svg>
-
-                    {{ .SubmitLabel }}
-                </button>
-            </form>
-
-            {{ if .RemoveAction }}
-                <form id="remove-shortcut-form" method="post" action="{{ .RemoveAction }}">
-                    <button
-                            id="remove-shortcut-button"
-                            class="relative flex w-full items-center gap-3 overflow-hidden rounded-lg border-0 bg-neutral-800 px-4 py-3 text-left text-white transition-all duration-300 hover:bg-neutral-900 focus:outline-none focus:ring-0 focus-visible:ring-blue-500 focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-700 cursor-pointer"
-                            type="button"
-                    >
-                        <span
-                                id="remove-shortcut-progress"
-                                class="absolute inset-y-0 left-0 w-0 bg-red-900/40 transition-[width] duration-[1500ms]"
-                        ></span>
-
-                        <span class="relative flex h-9 w-9 items-center justify-center rounded-md bg-white/8">
-                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 fill="currentColor">
-                                <path d="M7 4V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V4H22V6H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V6H2V4H7ZM6 6V19H18V6H6ZM9 9H11V16H9V9ZM13 9H15V16H13V9ZM9 4H15V4H9Z"></path>
-                            </svg>
-                        </span>
-
-                        <span id="remove-shortcut-label" class="relative text-base leading-none">Remove shortcut</span>
-                    </button>
-                </form>
-            {{ end }}
+  <div class="flex justify-center">
+    <div class="grid gap-5 max-w-sm w-full">
+      <form
+              class="grid gap-5 text-black"
+              method="post"
+              action="{{ .FormAction }}"
+      >
+        <div class="relative">
+          <input
+                  id="name"
+                  name="name"
+                  class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
+                  placeholder=" "
+                  autocomplete="off"
+                  autocapitalize="off"
+                  value="{{ .Name }}"
+                  {{ if not .AutofocusURL }}autofocus{{ end }}
+          >
+          <label
+                  for="name"
+                  class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
+          >
+            Name
+          </label>
         </div>
+
+        <div class="relative">
+          <input
+                  id="url"
+                  name="url"
+                  class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
+                  placeholder=" "
+                  autocomplete="off"
+                  autocapitalize="off"
+                  value="{{ .URL }}"
+                  {{ if .AutofocusURL }}autofocus{{ end }}
+          >
+          <label
+                  for="url"
+                  class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
+          >
+            URL
+          </label>
+        </div>
+
+        <button
+                class="flex justify-center items-center text-lg gap-2 h-12 bg-blue-500 text-white w-full rounded-lg border-0 py-1.5 focus:outline-none focus:ring-0 focus-visible:ring-blue-500 focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-700 cursor-pointer"
+                type="submit"
+        >
+          <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="currentColor">
+            <path d="M7 19V13H17V19H19V7.82843L16.1716 5H5V19H7ZM4 3H17L21 7V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM9 15V19H15V15H9Z"></path>
+          </svg>
+
+            {{ .SubmitLabel }}
+        </button>
+      </form>
+
+        {{ if .RemoveAction }}
+          <form id="remove-shortcut-form" method="post" action="{{ .RemoveAction }}">
+            <button
+                    id="remove-shortcut-button"
+                    class="relative flex w-full items-center gap-3 overflow-hidden rounded-lg border-0 bg-neutral-800 px-4 py-3 text-left text-white transition-all duration-300 hover:bg-neutral-900 focus:outline-none focus:ring-0 focus-visible:ring-blue-500 focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-700 cursor-pointer"
+                    type="button"
+            >
+              <span id="remove-shortcut-progress"
+                    class="absolute inset-y-0 left-0 w-0 bg-red-900/40 transition-[width] duration-1500"></span>
+
+              <span class="relative flex h-9 w-9 items-center justify-center rounded-md bg-white/8">
+                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                     fill="currentColor">
+                  <path d="M7 4V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V4H22V6H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V6H2V4H7ZM6 6V19H18V6H6ZM9 9H11V16H9V9ZM13 9H15V16H13V9ZM9 4H15V4H9Z"></path>
+                </svg>
+              </span>
+              <span id="remove-shortcut-label" class="relative text-base leading-none">Remove shortcut</span>
+            </button>
+          </form>
+        {{ end }}
     </div>
+  </div>
 
 </div>
 
 {{ if .RemoveAction }}
-    <script>
-        /** @type {HTMLFormElement} */
-        const removeShortcutForm = document.getElementById("remove-shortcut-form");
-        const removeShortcutButton = document.getElementById("remove-shortcut-button");
-        const removeShortcutLabel = document.getElementById("remove-shortcut-label");
-        const removeShortcutProgress = document.getElementById("remove-shortcut-progress");
+  <script>
+      /** @type {HTMLFormElement} */
+      const removeShortcutForm = document.getElementById("remove-shortcut-form");
+      const removeShortcutButton = document.getElementById("remove-shortcut-button");
+      const removeShortcutLabel = document.getElementById("remove-shortcut-label");
+      const removeShortcutProgress = document.getElementById("remove-shortcut-progress");
 
-        let armedAt = 0;
-        let resetTimer = null;
+      let armedAt = 0;
+      let resetTimer = null;
 
-        function resetRemoveButton() {
-            removeShortcutButton.classList.remove("bg-red-700", "hover:bg-red-800");
-            removeShortcutButton.classList.add("bg-neutral-800", "hover:bg-neutral-900");
-            removeShortcutProgress.classList.remove("w-full");
-            removeShortcutProgress.classList.add("w-0");
-            removeShortcutLabel.textContent = "Remove shortcut";
-            armedAt = 0;
+      function resetRemoveButton() {
+          removeShortcutButton.classList.remove("bg-red-700", "hover:bg-red-800");
+          removeShortcutButton.classList.add("bg-neutral-800", "hover:bg-neutral-900");
+          removeShortcutProgress.classList.remove("w-full");
+          removeShortcutProgress.classList.add("w-0");
+          removeShortcutLabel.textContent = "Remove shortcut";
+          armedAt = 0;
 
-            if (resetTimer) {
-                clearTimeout(resetTimer);
-                resetTimer = null;
-            }
-        }
+          if (resetTimer) {
+              clearTimeout(resetTimer);
+              resetTimer = null;
+          }
+      }
 
-        removeShortcutButton.addEventListener("click", () => {
-            const now = Date.now();
+      removeShortcutButton.addEventListener("click", () => {
+          const now = Date.now();
 
-            if (armedAt !== 0 && now >= armedAt) {
-                removeShortcutForm.submit();
-                return;
-            }
+          if (armedAt !== 0 && now >= armedAt) {
+              removeShortcutForm.submit();
+              return;
+          }
 
-            removeShortcutButton.classList.remove("bg-neutral-800", "hover:bg-neutral-900");
-            removeShortcutButton.classList.add("bg-red-700", "hover:bg-red-800");
-            removeShortcutProgress.classList.remove("w-0");
-            removeShortcutProgress.classList.add("w-full");
-            removeShortcutLabel.textContent = "Confirm remove";
-            armedAt = now + 1500;
+          removeShortcutButton.classList.remove("bg-neutral-800", "hover:bg-neutral-900");
+          removeShortcutButton.classList.add("bg-red-700", "hover:bg-red-800");
+          removeShortcutProgress.classList.remove("w-0");
+          removeShortcutProgress.classList.add("w-full");
+          removeShortcutLabel.textContent = "Confirm remove";
+          armedAt = now + 1500;
 
-            if (resetTimer) {
-                clearTimeout(resetTimer);
-            }
+          if (resetTimer) {
+              clearTimeout(resetTimer);
+          }
 
-            resetTimer = window.setTimeout(resetRemoveButton, 5000);
-        });
-    </script>
+          resetTimer = window.setTimeout(resetRemoveButton, 5000);
+      });
+  </script>
 {{ end }}
 
 </body>
