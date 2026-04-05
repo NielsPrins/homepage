@@ -37,7 +37,7 @@ func main() {
 	app.Post("/remove/:id", edit.RemoveHandler)
 	app.Post("/order", order.PostHandler)
 
-	log.Fatal(app.Listen(":80"))
+	log.Fatal(app.Listen(":4700"))
 }
 
 func getContentType(filename string) string {

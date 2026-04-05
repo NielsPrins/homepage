@@ -14,5 +14,5 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/dist .
 
-EXPOSE 80
+EXPOSE 4700
 CMD ["./homepage-linux"]
