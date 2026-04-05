@@ -197,6 +197,41 @@ func GetAllShortcuts() (Shortcuts, error) {
 	return shortcuts, nil
 }
 
+func ReorderShortcuts(ids []string) error {
+	shortcuts, err := loadShortcuts()
+	if err != nil {
+		return fmt.Errorf("failed to load shortcuts: %w", err)
+	}
+
+	if len(ids) != len(shortcuts) {
+		return fmt.Errorf("not enough shortcut ID's supplied to reorder")
+	}
+
+	shortcutByID := make(map[string]Shortcut, len(shortcuts))
+	for _, shortcut := range shortcuts {
+		shortcutByID[shortcut.ID] = shortcut
+	}
+
+	reordered := make(Shortcuts, 0, len(shortcuts))
+	seen := make(map[string]bool, len(shortcuts))
+
+	for i, id := range ids {
+		shortcut, exists := shortcutByID[id]
+		if !exists {
+			return fmt.Errorf("no shortcut with ID: %s", id)
+		}
+		if seen[id] {
+			return fmt.Errorf("duplicate id: %s", id)
+		}
+
+		shortcut.OrderNum = i + 1
+		reordered = append(reordered, shortcut)
+		seen[id] = true
+	}
+
+	return saveShortcuts(reordered)
+}
+
 func sortShortcutsByOrder(shortcuts Shortcuts) {
 	sort.Slice(shortcuts, func(i, j int) bool {
 		return shortcuts[i].OrderNum < shortcuts[j].OrderNum

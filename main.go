@@ -5,6 +5,7 @@ import (
 	"homepage/routes/add"
 	"homepage/routes/edit"
 	"homepage/routes/home"
+	"homepage/routes/order"
 	"log"
 	"strings"
 
@@ -34,6 +35,7 @@ func main() {
 	app.Get("/edit/:id", edit.Handler)
 	app.Post("/edit/:id", edit.PostHandler)
 	app.Post("/remove/:id", edit.RemoveHandler)
+	app.Post("/order", order.PostHandler)
 
 	log.Fatal(app.Listen(":80"))
 }
