@@ -91,6 +91,10 @@ func saveShortcuts(shortcuts Shortcuts) error {
 }
 
 func ensureValidUrl(urlString string) (string, error) {
+	if urlString == "" {
+		return "", errors.New("url is required")
+	}
+
 	//goland:noinspection HttpUrlsUsage
 	if !strings.HasPrefix(urlString, "http://") && !strings.HasPrefix(urlString, "https://") {
 		urlString = "https://" + urlString
@@ -132,6 +136,10 @@ func AddShortcut(url string, name string) (string, error) {
 }
 
 func EditShortcut(id, url, name string) error {
+	if name == "" {
+		return fmt.Errorf("name is required")
+	}
+
 	shortcuts, err := loadShortcuts()
 	if err != nil {
 		return fmt.Errorf("failed to load shortcuts: %w", err)
