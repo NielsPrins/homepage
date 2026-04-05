@@ -6,6 +6,7 @@
   <title>Home</title>
   <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/public/global.min.css">
+  <script src="/public/Sortable.min.js"></script>
 </head>
 <body class="bg-neutral-700 text-white absolute inset-0 grid items-center">
 
@@ -34,18 +35,25 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-6 max-w-full md:max-w-2xl justify-self-center">
+  <div id="shortcuts-grid"
+       class="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-6 max-w-full md:max-w-2xl justify-self-center">
       {{ range  .Shortcuts }}
-        <div class="relative">
-          <a class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+        <div class="relative"
+             data-shortcut-id="{{ .ID }}"
+        >
+          <a class="shortcut-link bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
              href="{{ .URL }}">
-            <img class="w-6 h-6" src="{{ .ImageURL }}" alt="{{ .ImageURL }}">
+            <img class="w-6 h-6"
+                 src="{{ .ImageURL }}"
+                 alt="{{ .ImageURL }}"
+            >
               {{ .Name }}
           </a>
-          <a
-                  href="/edit/{{ .ID }}"
-                  class="absolute right-0 top-0 -mt-2 -mr-2 p-2 bg-neutral-800 hover:bg-neutral-900 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-                  hidden>
+
+          <a class="shortcut-edit absolute right-0 top-0 -mt-2 -mr-2 p-2 bg-neutral-800 hover:bg-neutral-900 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+             href="/edit/{{ .ID }}"
+             hidden
+          >
             <svg class="w-4 h-4 fill-current"
                  xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 24 24"
@@ -60,7 +68,11 @@
        class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
        href="/add"
        hidden>
-      <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <svg class="w-6 h-6"
+           xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 24 24"
+           fill="currentColor"
+      >
         <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
       </svg>
       Add
@@ -83,15 +95,19 @@
     </span>
 </button>
 
-<script type="module">
+<script>
     /** @type {HTMLInputElement} */
     const searchInput = document.getElementById("search");
     const searchShell = document.getElementById("search-shell");
 
     const editHomepageButton = document.getElementById("edit-homepage");
 
+    const shortcutsGrid = document.getElementById("shortcuts-grid");
+    const shortcuts = Array.from(shortcutsGrid.querySelectorAll("[data-shortcut-id]"));
     const addShortcutButton = document.getElementById("add-shortcut");
-    const editLinks = document.querySelectorAll('a[href^="/edit/"]');
+    const editLinks = shortcutsGrid.querySelectorAll(".shortcut-edit");
+
+    let isEditing = false;
 
     requestAnimationFrame(() => {
         searchShell.classList.remove("transition-none");
@@ -111,9 +127,50 @@
         searchInput.focus();
     });
 
+    shortcuts.forEach((tile) => {
+        const shortcutLink = tile.querySelector(".shortcut-link");
+
+        shortcutLink.addEventListener("click", function (e) {
+            if (!isEditing) return;
+            e.preventDefault();
+        });
+    });
+
+    const sortable = Sortable.create(shortcutsGrid, {
+        draggable: "[data-shortcut-id]",
+        disabled: true,
+        animation: 150,
+        dragClass: "is-dragging",
+        ghostClass: "is-dragging",
+        filter: ".shortcut-edit",
+        onEnd: saveShortcutOrder,
+    });
+
+    async function saveShortcutOrder() {
+        const shortcuts = shortcutsGrid.querySelectorAll("[data-shortcut-id]");
+        const ids = Array.from(shortcuts).map((tile) => tile.getAttribute('data-shortcut-id'));
+
+        try {
+            const response = await fetch("/order", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ids: ids}),
+            });
+
+            if (!response.ok) {
+                alert("Unable to order shortcuts");
+            }
+        } catch (error) {
+            alert("Unable to order shortcuts");
+            console.error(error);
+        }
+    }
+
     editHomepageButton.addEventListener("click", function () {
+        isEditing = true;
         editHomepageButton.hidden = true;
         addShortcutButton.hidden = false;
+        sortable.option("disabled", false);
         editLinks.forEach((link) => link.hidden = false);
     });
 </script>

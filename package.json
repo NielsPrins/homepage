@@ -4,9 +4,12 @@
     "tailwind": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --minify",
     "tailwind-watch": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --minify --watch"
   },
+  "dependencies": {
+    "sortablejs": "^1.15.7"
+  },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
     "@tailwindcss/forms": "^0.5.11",
-    "tailwindcss": "^4.2.2",
-    "@tailwindcss/cli": "^4.2.2"
+    "tailwindcss": "^4.2.2"
   }
 }
