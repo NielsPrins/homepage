@@ -4,6 +4,7 @@ import (
 	"embed"
 	"homepage/routes/add"
 	"homepage/routes/edit"
+	"homepage/routes/errorpage"
 	"homepage/routes/home"
 	"homepage/routes/order"
 	"log"
@@ -16,7 +17,9 @@ import (
 var res embed.FS
 
 func main() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: errorpage.Render,
+	})
 
 	app.Use("/public", func(c *fiber.Ctx) error {
 		file := strings.TrimLeft(c.Path(), "/")

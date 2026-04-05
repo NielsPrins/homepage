@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .StatusCode }} {{ .StatusText }}</title>
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/public/global.min.css">
+</head>
+<body class="bg-neutral-700 text-white absolute inset-0 grid items-center justify-center">
+
+<div class="w-3xl rounded-lg bg-neutral-800 p-8">
+  <p class="text-sm text-neutral-500">{{ .StatusText }}</p>
+
+  <div class="mt-6 flex items-end gap-4">
+    <span class="text-7xl font-semibold">{{ .StatusCode }}</span>
+    <div class="pb-2">
+      <h1 class="text-3xl font-semibold">{{ .Title }}</h1>
+    </div>
+  </div>
+
+    {{ if .Detail }}
+      <div class="grid gap-1 mt-4 rounded-lg bg-neutral-900 px-4 py-3 text-sm text-gray-200">
+        <span class="text-neutral-500">Error</span>
+        <p class="break-all font-mono">{{ .Detail }}</p>
+      </div>
+    {{ end }}
+
+  <div class="flex">
+    <a class="mt-8 text-sm bg-neutral-600 text-white rounded-lg border-0 px-5 py-3 focus:outline-none focus:ring-0 focus-visible:ring-blue-500 focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-700"
+       href="/">
+      Back home
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
