@@ -2,3 +2,10 @@
 
 @source "./routes/**/*.gohtml";
 @plugin "@tailwindcss/forms";
+
+@layer utilities {
+  .dragging-shortcuts,
+  .dragging-shortcuts * {
+    cursor: grabbing !important;
+  }
+}

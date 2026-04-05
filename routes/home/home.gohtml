@@ -140,13 +140,17 @@
         draggable: "[data-shortcut-id]",
         disabled: true,
         animation: 150,
-        dragClass: "is-dragging",
-        ghostClass: "is-dragging",
+        ghostClass: "opacity-60",
         filter: ".shortcut-edit",
+        onStart: function () {
+            document.body.classList.add("dragging-shortcuts");
+        },
         onEnd: saveShortcutOrder,
     });
 
     async function saveShortcutOrder() {
+        document.body.classList.remove("dragging-shortcuts");
+
         const shortcuts = shortcutsGrid.querySelectorAll("[data-shortcut-id]");
         const ids = Array.from(shortcuts).map((tile) => tile.getAttribute('data-shortcut-id'));
 
@@ -171,6 +175,9 @@
         editHomepageButton.hidden = true;
         addShortcutButton.hidden = false;
         sortable.option("disabled", false);
+        shortcuts.forEach((tile) => {
+            tile.classList.add("cursor-grab", "select-none");
+        });
         editLinks.forEach((link) => link.hidden = false);
     });
 </script>
