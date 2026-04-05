@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"sort"
@@ -89,15 +90,18 @@ func saveShortcuts(shortcuts Shortcuts) error {
 	return os.WriteFile(DataFilePath, data, 0644)
 }
 
-func ensureValidUrl(url string) string {
-	if //goland:noinspection HttpUrlsUsage
-	strings.HasPrefix(url, "http://") {
-		return url
+func ensureValidUrl(urlString string) (string, error) {
+	//goland:noinspection HttpUrlsUsage
+	if !strings.HasPrefix(urlString, "http://") && !strings.HasPrefix(urlString, "https://") {
+		urlString = "https://" + urlString
 	}
-	if !strings.HasPrefix(url, "https://") {
-		return "https://" + url
+
+	_, err := url.Parse(urlString)
+	if err != nil {
+		return "", fmt.Errorf("invalid URL: %w", err)
 	}
-	return url
+
+	return urlString, nil
 }
 
 func AddShortcut(url string, name string) (string, error) {
@@ -106,12 +110,12 @@ func AddShortcut(url string, name string) (string, error) {
 		return "", fmt.Errorf("failed to load shortcuts: %w", err)
 	}
 
-	url = ensureValidUrl(url)
-
-	imageUrl, err := GetImageForShortcut(url)
+	url, err = ensureValidUrl(url)
 	if err != nil {
-		return "", fmt.Errorf("failed to get image url: %w", err)
+		return "", err
 	}
+
+	imageUrl, _ := GetImageForShortcut(url)
 
 	id := uuid.New().String()
 
@@ -133,12 +137,12 @@ func EditShortcut(id, url, name string) error {
 		return fmt.Errorf("failed to load shortcuts: %w", err)
 	}
 
-	url = ensureValidUrl(url)
-
-	imageUrl, err := GetImageForShortcut(url)
+	url, err = ensureValidUrl(url)
 	if err != nil {
-		return fmt.Errorf("failed to get image url: %w", err)
+		return err
 	}
+
+	imageUrl, _ := GetImageForShortcut(url)
 
 	foundShortcut := false
 	for i, shortcut := range shortcuts {
