@@ -4,13 +4,14 @@ set -e
 
 APP_DIR="dist/macos/Homepage.app"
 DMG_PATH="dist/macos/Homepage.dmg"
+DMG_DIR="dist/macos/dmg"
 
 CONTENTS_DIR="$APP_DIR/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
 HELPERS_DIR="$CONTENTS_DIR/Helpers"
 RESOURCES_DIR="$CONTENTS_DIR/Resources"
 
-rm -rf "$APP_DIR" "$DMG_PATH"
+rm -rf "$APP_DIR" "$DMG_PATH" "$DMG_DIR"
 mkdir -p "$MACOS_DIR" "$HELPERS_DIR" "$RESOURCES_DIR"
 
 GOOS=darwin go build -o "$HELPERS_DIR/homepage-server" .
@@ -78,9 +79,13 @@ EOF
 
 chmod +x "$MACOS_DIR/HomepageLauncher" "$HELPERS_DIR/homepage-server"
 
+mkdir -p "$DMG_DIR"
+cp -R "$APP_DIR" "$DMG_DIR/Homepage.app"
+ln -s /Applications "$DMG_DIR/Applications"
+
 hdiutil create \
   -volname "Homepage" \
-  -srcfolder "$APP_DIR" \
+  -srcfolder "$DMG_DIR" \
   -ov \
   -format UDZO \
   "$DMG_PATH" >/dev/null
