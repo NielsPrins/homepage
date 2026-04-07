@@ -158,17 +158,21 @@ func EditShortcut(id, url, name, customImage string) error {
 		return err
 	}
 
-	imageUrl := customImage
-	if imageUrl == "" {
-		imageUrl, _ = GetImageForShortcut(url)
-	}
-
 	foundShortcut := false
 	for i, shortcut := range shortcuts {
 		if shortcut.ID == id {
 			shortcuts[i].URL = url
 			shortcuts[i].Name = name
-			shortcuts[i].ImageURL = imageUrl
+
+			if customImage != "" {
+				shortcuts[i].ImageURL = customImage
+			} else if !strings.HasPrefix(shortcut.ImageURL, "data:image/") {
+				imageUrl, _ := GetImageForShortcut(url)
+				if imageUrl != "" {
+					shortcuts[i].ImageURL = imageUrl
+				}
+			}
+
 			foundShortcut = true
 			break
 		}
