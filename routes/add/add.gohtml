@@ -62,7 +62,8 @@
           <label class="text-xs text-neutral-300">Icon (optional, max 200KB)</label>
 
           <div class="flex items-center gap-3">
-            <div id="image-preview-container" class="shrink-0 {{ if not .ImageURL }}hidden{{ end }}">
+            <div id="image-preview-container"
+                 class="shrink-0 {{ if or (not .ImageURL) (eq .ImageURL "/public/no-favicon.ico") }}hidden{{ end }}">
               <img id="image-preview" class="w-10 h-10 rounded object-contain" src="{{ .ImageURL }}" alt="">
             </div>
 

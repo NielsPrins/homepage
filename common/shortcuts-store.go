@@ -128,6 +128,9 @@ func AddShortcut(url string, name string, customImage string) (string, error) {
 	if imageUrl == "" {
 		imageUrl, _ = GetImageForShortcut(url)
 	}
+	if imageUrl == "" {
+		imageUrl = "/public/no-favicon.ico"
+	}
 
 	id := uuid.New().String()
 
@@ -170,6 +173,8 @@ func EditShortcut(id, url, name, customImage string) error {
 				imageUrl, _ := GetImageForShortcut(url)
 				if imageUrl != "" {
 					shortcuts[i].ImageURL = imageUrl
+				} else {
+					shortcuts[i].ImageURL = "/public/no-favicon.ico"
 				}
 			}
 
