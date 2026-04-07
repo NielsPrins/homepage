@@ -44,8 +44,8 @@
           <a class="shortcut-link bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
              href="{{ .URL }}">
             <img class="w-6 h-6"
-                 src="{{ .ImageURL }}"
-                 alt="{{ .ImageURL }}"
+                 src="{{ .SafeImageURL }}"
+                 alt="{{ .Name }}"
             >
               {{ .Name }}
           </a>

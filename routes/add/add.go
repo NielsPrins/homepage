@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"homepage/common"
+	"html/template"
 	"io"
 	"net/http"
 
@@ -23,7 +24,7 @@ type Data struct {
 	RemoveAction string
 	Name         string
 	URL          string
-	ImageURL     string
+	ImageURL     template.URL
 	AutofocusURL bool
 }
 

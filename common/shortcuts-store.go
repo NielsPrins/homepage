@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -19,6 +20,10 @@ type Shortcut struct {
 	Name     string `json:"name"`
 	ImageURL string `json:"imageURL"`
 	OrderNum int    `json:"order"`
+}
+
+func (s Shortcut) SafeImageURL() template.URL {
+	return template.URL(s.ImageURL)
 }
 
 type Shortcuts []Shortcut

@@ -3,6 +3,7 @@ package edit
 import (
 	"homepage/common"
 	"homepage/routes/add"
+	"html/template"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -20,7 +21,7 @@ func Handler(c *fiber.Ctx) error {
 		RemoveAction: "/remove/" + shortcut.ID,
 		Name:         shortcut.Name,
 		URL:          shortcut.URL,
-		ImageURL:     shortcut.ImageURL,
+		ImageURL:     template.URL(shortcut.ImageURL),
 		AutofocusURL: true,
 	})
 }
