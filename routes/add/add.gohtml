@@ -17,6 +17,7 @@
       <form
               class="grid gap-5 text-black"
               method="post"
+              enctype="multipart/form-data"
               action="{{ .FormAction }}"
       >
         <div class="relative">
@@ -57,6 +58,25 @@
           </label>
         </div>
 
+        <div class="grid gap-2">
+          <label class="text-xs text-neutral-300">Icon (optional, max 200KB)</label>
+
+          <div class="flex items-center gap-3">
+            <div id="image-preview-container" class="shrink-0 {{ if not .ImageURL }}hidden{{ end }}">
+              <img id="image-preview" class="w-10 h-10 rounded object-contain" src="{{ .ImageURL }}" alt="">
+            </div>
+
+            <label class="flex flex-1 items-center gap-2 cursor-pointer rounded-lg bg-white px-3 py-2.5 text-sm text-neutral-500 hover:bg-neutral-200">
+              <svg class="w-4 h-4 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"></path>
+              </svg>
+
+              <span id="image-file-label">Choose image…</span>
+              <input id="image-input" type="file" name="image" accept="image/*" class="hidden">
+            </label>
+          </div>
+        </div>
+
         <button
                 class="flex justify-center items-center text-lg gap-2 h-12 bg-blue-500 text-white w-full rounded-lg border-0 py-3 focus:outline-none focus:ring-0 focus-visible:ring-blue-500 focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-700 cursor-pointer"
                 type="submit"
@@ -94,6 +114,33 @@
   </div>
 
 </div>
+
+<script>
+    const imageInput = document.getElementById("image-input");
+    const imagePreview = document.getElementById("image-preview");
+    const imagePreviewContainer = document.getElementById("image-preview-container");
+    const imageFileLabel = document.getElementById("image-file-label");
+
+    imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        if (file.size > 200 * 1024) {
+            alert("Image must be smaller than 200KB.");
+            this.value = "";
+            return;
+        }
+
+        imageFileLabel.textContent = file.name;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            imagePreviewContainer.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+    });
+</script>
 
 {{ if .RemoveAction }}
   <script>

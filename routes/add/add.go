@@ -2,13 +2,19 @@ package add
 
 import (
 	_ "embed"
+	"encoding/base64"
+	"fmt"
 	"homepage/common"
+	"io"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 //go:embed add.gohtml
 var HtmlTemplate string
+
+const MaxImageSize = 200 * 1024 // 200KB
 
 type Data struct {
 	Title        string
@@ -17,6 +23,7 @@ type Data struct {
 	RemoveAction string
 	Name         string
 	URL          string
+	ImageURL     string
 	AutofocusURL bool
 }
 
@@ -30,12 +37,15 @@ func Handler(c *fiber.Ctx) error {
 }
 
 func PostHandler(c *fiber.Ctx) error {
-	postData, err := ParseShortcutForm(c)
+	name := c.FormValue("name")
+	url := c.FormValue("url")
+
+	customImage, err := ParseCustomImage(c)
 	if err != nil {
 		return err
 	}
 
-	_, err = common.AddShortcut(postData.URL, postData.Name)
+	_, err = common.AddShortcut(url, name, customImage)
 	if err != nil {
 		return err
 	}
@@ -43,18 +53,28 @@ func PostHandler(c *fiber.Ctx) error {
 	return c.Redirect("/")
 }
 
-type ShortcutFormData struct {
-	Name string `json:"name" form:"name"`
-	URL  string `json:"url" form:"url"`
-}
-
-func ParseShortcutForm(c *fiber.Ctx) (ShortcutFormData, error) {
-	postData := ShortcutFormData{}
-
-	err := c.BodyParser(&postData)
-	if err != nil {
-		return ShortcutFormData{}, err
+func ParseCustomImage(c *fiber.Ctx) (string, error) {
+	file, err := c.FormFile("image")
+	if err != nil || file == nil {
+		return "", nil
 	}
 
-	return postData, nil
+	if file.Size > MaxImageSize {
+		return "", fmt.Errorf("image must be smaller than 200KB")
+	}
+
+	f, err := file.Open()
+	if err != nil {
+		return "", err
+	}
+	defer func() { _ = f.Close() }()
+
+	data, err := io.ReadAll(f)
+	if err != nil {
+		return "", err
+	}
+
+	mimeType := http.DetectContentType(data)
+	encoded := base64.StdEncoding.EncodeToString(data)
+	return fmt.Sprintf("data:%s;base64,%s", mimeType, encoded), nil
 }

@@ -108,7 +108,7 @@ func ensureValidUrl(urlString string) (string, error) {
 	return urlString, nil
 }
 
-func AddShortcut(url string, name string) (string, error) {
+func AddShortcut(url string, name string, customImage string) (string, error) {
 	shortcuts, err := loadShortcuts()
 	if err != nil {
 		return "", fmt.Errorf("failed to load shortcuts: %w", err)
@@ -119,7 +119,10 @@ func AddShortcut(url string, name string) (string, error) {
 		return "", err
 	}
 
-	imageUrl, _ := GetImageForShortcut(url)
+	imageUrl := customImage
+	if imageUrl == "" {
+		imageUrl, _ = GetImageForShortcut(url)
+	}
 
 	id := uuid.New().String()
 
@@ -135,7 +138,7 @@ func AddShortcut(url string, name string) (string, error) {
 	return id, saveShortcuts(shortcuts)
 }
 
-func EditShortcut(id, url, name string) error {
+func EditShortcut(id, url, name, customImage string) error {
 	if name == "" {
 		return fmt.Errorf("name is required")
 	}
@@ -150,7 +153,10 @@ func EditShortcut(id, url, name string) error {
 		return err
 	}
 
-	imageUrl, _ := GetImageForShortcut(url)
+	imageUrl := customImage
+	if imageUrl == "" {
+		imageUrl, _ = GetImageForShortcut(url)
+	}
 
 	foundShortcut := false
 	for i, shortcut := range shortcuts {

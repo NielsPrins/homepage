@@ -20,17 +20,21 @@ func Handler(c *fiber.Ctx) error {
 		RemoveAction: "/remove/" + shortcut.ID,
 		Name:         shortcut.Name,
 		URL:          shortcut.URL,
+		ImageURL:     shortcut.ImageURL,
 		AutofocusURL: true,
 	})
 }
 
 func PostHandler(c *fiber.Ctx) error {
-	postData, err := add.ParseShortcutForm(c)
+	name := c.FormValue("name")
+	url := c.FormValue("url")
+
+	customImage, err := add.ParseCustomImage(c)
 	if err != nil {
 		return err
 	}
 
-	err = common.EditShortcut(c.Params("id"), postData.URL, postData.Name)
+	err = common.EditShortcut(c.Params("id"), url, name, customImage)
 	if err != nil {
 		return err
 	}
