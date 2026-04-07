@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "./dev.sh",
+    "build-for-macos": "./build-macos-app.sh",
     "tailwind": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --minify",
     "tailwind-watch": "tailwindcss -i ./tailwind.css -o ./public/global.min.css --minify --watch"
   },
