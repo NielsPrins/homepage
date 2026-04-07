@@ -8,6 +8,7 @@ import (
 	"homepage/routes/home"
 	"homepage/routes/order"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -40,7 +41,11 @@ func main() {
 	app.Post("/remove/:id", edit.RemoveHandler)
 	app.Post("/order", order.PostHandler)
 
-	log.Fatal(app.Listen(":4701"))
+	port := ":4700"
+	if os.Getenv("APP_ENV") == "dev" {
+		port = ":4600"
+	}
+	log.Fatal(app.Listen(port))
 }
 
 func getContentType(filename string) string {
