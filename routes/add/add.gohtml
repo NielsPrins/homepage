@@ -25,9 +25,8 @@
                   id="name"
                   name="name"
                   class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
-                  placeholder=" "
                   autocomplete="off"
-                  autocapitalize="off"
+                  autocapitalize="on"
                   value="{{ .Name }}"
                   {{ if not .AutofocusURL }}autofocus{{ end }}
           >
@@ -44,7 +43,6 @@
                   id="url"
                   name="url"
                   class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
-                  placeholder=" "
                   autocomplete="off"
                   autocapitalize="off"
                   value="{{ .URL }}"
@@ -55,6 +53,23 @@
                   class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
           >
             URL
+          </label>
+        </div>
+
+        <div class="relative">
+          <input
+                  id="section"
+                  name="section"
+                  class="peer h-12 w-full rounded-lg border-0 px-3 pt-5 pb-1 placeholder-transparent focus:outline-none focus:ring-0"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  value="{{ .Section }}"
+          >
+          <label
+                  for="section"
+                  class="pointer-events-none absolute left-3 top-2 text-xs text-gray-500 transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs"
+          >
+            Section (optional)
           </label>
         </div>
 

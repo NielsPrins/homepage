@@ -24,6 +24,7 @@ type Data struct {
 	RemoveAction string
 	Name         string
 	URL          string
+	Section      string
 	ImageURL     template.URL
 	AutofocusURL bool
 }
@@ -40,13 +41,14 @@ func Handler(c *fiber.Ctx) error {
 func PostHandler(c *fiber.Ctx) error {
 	name := c.FormValue("name")
 	url := c.FormValue("url")
+	section := c.FormValue("section")
 
 	customImage, err := ParseCustomImage(c)
 	if err != nil {
 		return err
 	}
 
-	_, err = common.AddShortcut(url, name, customImage)
+	_, err = common.AddShortcut(url, name, section, customImage)
 	if err != nil {
 		return err
 	}

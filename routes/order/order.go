@@ -8,7 +8,7 @@ import (
 )
 
 type ReorderRequest struct {
-	IDs []string `json:"ids"`
+	Items []common.OrderShortcutDto `json:"items"`
 }
 
 func PostHandler(c *fiber.Ctx) error {
@@ -19,7 +19,7 @@ func PostHandler(c *fiber.Ctx) error {
 		return err
 	}
 
-	err = common.ReorderShortcuts(request.IDs)
+	err = common.ReorderShortcuts(request.Items)
 	if err != nil {
 		return err
 	}

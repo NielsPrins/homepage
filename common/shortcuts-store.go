@@ -18,6 +18,7 @@ type Shortcut struct {
 	ID       string `json:"id"`
 	URL      string `json:"url"`
 	Name     string `json:"name"`
+	Section  string `json:"section,omitempty"`
 	ImageURL string `json:"imageURL"`
 	OrderNum int    `json:"order"`
 }
@@ -113,7 +114,7 @@ func ensureValidUrl(urlString string) (string, error) {
 	return urlString, nil
 }
 
-func AddShortcut(url string, name string, customImage string) (string, error) {
+func AddShortcut(url string, name string, section string, customImage string) (string, error) {
 	shortcuts, err := loadShortcuts()
 	if err != nil {
 		return "", fmt.Errorf("failed to load shortcuts: %w", err)
@@ -138,6 +139,7 @@ func AddShortcut(url string, name string, customImage string) (string, error) {
 		ID:       id,
 		URL:      url,
 		Name:     name,
+		Section:  section,
 		ImageURL: imageUrl,
 		OrderNum: len(shortcuts) + 1,
 	}
@@ -146,7 +148,7 @@ func AddShortcut(url string, name string, customImage string) (string, error) {
 	return id, saveShortcuts(shortcuts)
 }
 
-func EditShortcut(id, url, name, customImage string) error {
+func EditShortcut(id, url, name, section, customImage string) error {
 	if name == "" {
 		return fmt.Errorf("name is required")
 	}
@@ -166,6 +168,7 @@ func EditShortcut(id, url, name, customImage string) error {
 		if shortcut.ID == id {
 			shortcuts[i].URL = url
 			shortcuts[i].Name = name
+			shortcuts[i].Section = section
 
 			if customImage != "" {
 				shortcuts[i].ImageURL = customImage
@@ -229,14 +232,19 @@ func GetAllShortcuts() (Shortcuts, error) {
 	return shortcuts, nil
 }
 
-func ReorderShortcuts(ids []string) error {
+type OrderShortcutDto struct {
+	ID      string `json:"id"`
+	Section string `json:"section"`
+}
+
+func ReorderShortcuts(items []OrderShortcutDto) error {
 	shortcuts, err := loadShortcuts()
 	if err != nil {
 		return fmt.Errorf("failed to load shortcuts: %w", err)
 	}
 
-	if len(ids) != len(shortcuts) {
-		return fmt.Errorf("not enough shortcut ID's supplied to reorder")
+	if len(items) != len(shortcuts) {
+		return fmt.Errorf("not enough shortcut items supplied to reorder")
 	}
 
 	shortcutByID := make(map[string]Shortcut, len(shortcuts))
@@ -247,18 +255,19 @@ func ReorderShortcuts(ids []string) error {
 	reordered := make(Shortcuts, 0, len(shortcuts))
 	seen := make(map[string]bool, len(shortcuts))
 
-	for i, id := range ids {
-		shortcut, exists := shortcutByID[id]
+	for i, item := range items {
+		shortcut, exists := shortcutByID[item.ID]
 		if !exists {
-			return fmt.Errorf("no shortcut with ID: %s", id)
+			return fmt.Errorf("no shortcut with ID: %s", item.ID)
 		}
-		if seen[id] {
-			return fmt.Errorf("duplicate id: %s", id)
+		if seen[item.ID] {
+			return fmt.Errorf("duplicate id: %s", item.ID)
 		}
 
 		shortcut.OrderNum = i + 1
+		shortcut.Section = item.Section
 		reordered = append(reordered, shortcut)
-		seen[id] = true
+		seen[item.ID] = true
 	}
 
 	return saveShortcuts(reordered)

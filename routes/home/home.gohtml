@@ -35,32 +35,37 @@
     </div>
   </div>
 
-  <div id="shortcuts-grid"
-       class="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-6 max-w-full md:max-w-2xl justify-self-center">
-      {{ range  .Shortcuts }}
-        <div class="relative"
-             data-shortcut-id="{{ .ID }}"
-        >
-          <a class="shortcut-link bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-             href="{{ .URL }}">
-            <img class="w-6 h-6"
-                 src="{{ .SafeImageURL }}"
-                 alt="{{ .Name }}"
-            >
-              {{ .Name }}
-          </a>
+  <div class="grid gap-8 max-w-4xl justify-self-center w-full">
+      {{ range .SectionGroups }}
+        <div data-section-grid
+             data-section-name="{{ .Name }}"
+             class="flex flex-wrap gap-6 justify-center">
+            {{ range .Shortcuts }}
+              <div class="relative"
+                   data-shortcut-id="{{ .ID }}"
+              >
+                <a class="shortcut-link bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+                   href="{{ .URL }}">
+                  <img class="w-6 h-6"
+                       src="{{ .SafeImageURL }}"
+                       alt="{{ .Name }}"
+                  >
+                    {{ .Name }}
+                </a>
 
-          <a class="shortcut-edit absolute right-0 top-0 -mt-2 -mr-2 p-2 bg-neutral-800 hover:bg-neutral-900 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-             href="/edit/{{ .ID }}"
-             hidden
-          >
-            <svg class="w-4 h-4 fill-current"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 24 24"
-            >
-              <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
-            </svg>
-          </a>
+                <a class="shortcut-edit absolute right-0 top-0 -mt-2 -mr-2 p-2 bg-neutral-800 hover:bg-neutral-900 rounded-md focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+                   href="/edit/{{ .ID }}"
+                   hidden
+                >
+                  <svg class="w-4 h-4 fill-current"
+                       xmlns="http://www.w3.org/2000/svg"
+                       viewBox="0 0 24 24"
+                  >
+                    <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
+                  </svg>
+                </a>
+              </div>
+            {{ end }}
         </div>
       {{ end }}
 
@@ -101,11 +106,10 @@
     const searchShell = document.getElementById("search-shell");
 
     const editHomepageButton = document.getElementById("edit-homepage");
-
-    const shortcutsGrid = document.getElementById("shortcuts-grid");
-    const shortcuts = Array.from(shortcutsGrid.querySelectorAll("[data-shortcut-id]"));
     const addShortcutButton = document.getElementById("add-shortcut");
-    const editLinks = shortcutsGrid.querySelectorAll(".shortcut-edit");
+    const sectionGrids = document.querySelectorAll("[data-section-grid]");
+    const allShortcutTiles = document.querySelectorAll("[data-shortcut-id]");
+    const editLinks = document.querySelectorAll(".shortcut-edit");
 
     let isEditing = false;
 
@@ -127,7 +131,7 @@
         searchInput.focus();
     });
 
-    shortcuts.forEach((tile) => {
+    allShortcutTiles.forEach((tile) => {
         const shortcutLink = tile.querySelector(".shortcut-link");
 
         shortcutLink.addEventListener("click", function (e) {
@@ -136,29 +140,42 @@
         });
     });
 
-    const sortable = Sortable.create(shortcutsGrid, {
-        draggable: "[data-shortcut-id]",
-        disabled: true,
-        animation: 150,
-        ghostClass: "opacity-60",
-        filter: ".shortcut-edit",
-        onStart: function () {
-            document.body.classList.add("dragging-shortcuts");
-        },
-        onEnd: saveShortcutOrder,
-    });
+    const sortables = Array.from(sectionGrids).map((grid) =>
+        Sortable.create(grid, {
+            group: "shortcuts",
+            draggable: "[data-shortcut-id]",
+            disabled: true,
+            animation: 150,
+            ghostClass: "opacity-60",
+            filter: ".shortcut-edit",
+            emptyInsertThreshold: 48,
+            onStart: function () {
+                document.body.classList.add("dragging-shortcuts");
+            },
+            onEnd: saveShortcutOrder,
+        })
+    );
 
     async function saveShortcutOrder() {
         document.body.classList.remove("dragging-shortcuts");
 
-        const shortcuts = shortcutsGrid.querySelectorAll("[data-shortcut-id]");
-        const ids = Array.from(shortcuts).map((tile) => tile.getAttribute('data-shortcut-id'));
+        const items = [];
+        sectionGrids.forEach((grid) => {
+            const section = grid.getAttribute("data-section-name");
+
+            grid.querySelectorAll("[data-shortcut-id]").forEach((tile) => {
+                items.push({
+                    id: tile.getAttribute("data-shortcut-id"),
+                    section: section,
+                });
+            });
+        });
 
         try {
             const response = await fetch("/order", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ids: ids}),
+                body: JSON.stringify({items}),
             });
 
             if (!response.ok) {
@@ -174,8 +191,8 @@
         isEditing = true;
         editHomepageButton.hidden = true;
         addShortcutButton.hidden = false;
-        sortable.option("disabled", false);
-        shortcuts.forEach((tile) => {
+        sortables.forEach((s) => s.option("disabled", false));
+        allShortcutTiles.forEach((tile) => {
             tile.classList.add("cursor-grab", "select-none");
         });
         editLinks.forEach((link) => link.hidden = false);
