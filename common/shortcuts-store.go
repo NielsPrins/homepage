@@ -27,7 +27,13 @@ func (s Shortcut) SafeImageURL() template.URL {
 
 type Shortcuts []Shortcut
 
-const DataFilePath = "data/shortcuts.json"
+var DataFilePath = func() string {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return "data/shortcuts.json"
+	}
+	return filepath.Join(configDir, "Homepage", "shortcuts.json")
+}()
 
 var ErrShortcutNotFound = errors.New("shortcut not found")
 
