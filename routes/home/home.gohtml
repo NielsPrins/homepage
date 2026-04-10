@@ -69,25 +69,27 @@
         </div>
       {{ end }}
 
-    <a id="add-shortcut"
-       class="bg-neutral-600 hover:bg-neutral-500 p-4 rounded-md grid gap-2 place-items-center min-w-32 focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-       href="/add"
-       hidden>
-      <svg class="w-6 h-6"
-           xmlns="http://www.w3.org/2000/svg"
-           viewBox="0 0 24 24"
-           fill="currentColor"
-      >
-        <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
-      </svg>
-      Add
-    </a>
   </div>
 </div>
 
+<a id="add-shortcut"
+   class="group fixed right-4 bottom-4 bg-neutral-600 hover:bg-neutral-500 text-sm text-gray-200 px-2 py-1 rounded-md flex items-center focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none transition-all duration-300"
+   href="/add"
+   hidden>
+  <svg class="w-4 h-4 fill-current"
+       xmlns="http://www.w3.org/2000/svg"
+       viewBox="0 0 24 24"
+  >
+    <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+  </svg>
+  <span class="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 group-focus-visible:max-w-xs group-focus-visible:opacity-100 group-focus-visible:ml-2">
+    Add shortcut
+  </span>
+</a>
+
 <button id="edit-homepage"
         type="button"
-        class="group fixed right-4 bottom-4 bg-neutral-600 hover:bg-neutral-500 text-sm text-gray-200 px-2 py-1 rounded-md flex items-center focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none cursor-pointer transition-all duration-300"
+        class="group fixed right-4 bottom-4 bg-neutral-600 hover:bg-neutral-500 text-sm text-gray-200 px-2 py-1 rounded-md flex items-center focus-visible:ring-blue-500 focus-visible:ring-2 focus:outline-none transition-all duration-300 cursor-pointer"
 >
   <svg class="w-4 h-4 fill-current"
        xmlns="http://www.w3.org/2000/svg"
