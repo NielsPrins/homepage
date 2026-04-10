@@ -82,13 +82,13 @@
               <img id="image-preview" class="w-10 h-10 rounded object-contain" src="{{ .ImageURL }}" alt="">
             </div>
 
-            <label class="flex flex-1 items-center gap-2 cursor-pointer rounded-lg bg-white px-3 py-2.5 text-sm text-neutral-500 hover:bg-neutral-200">
+            <label class="flex flex-1 items-center gap-2 cursor-pointer rounded-lg bg-white px-3 py-2.5 text-sm text-neutral-500 hover:bg-neutral-200 has-focus-visible:ring-2 has-focus-visible:ring-blue-500 has-focus-visible:ring-offset-4 has-focus-visible:ring-offset-neutral-700">
               <svg class="w-4 h-4 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"></path>
               </svg>
 
               <span id="image-file-label">Choose image…</span>
-              <input id="image-input" type="file" name="image" accept="image/*" class="hidden">
+              <input id="image-input" type="file" name="image" accept="image/*" class="sr-only">
             </label>
           </div>
         </div>
