@@ -188,8 +188,10 @@
       removeShortcutButton.addEventListener("click", () => {
           const now = Date.now();
 
-          if (armedAt !== 0 && now >= armedAt) {
-              removeShortcutForm.submit();
+          if (armedAt !== 0) {
+              if (now >= armedAt) {
+                  removeShortcutForm.submit();
+              }
               return;
           }
 
