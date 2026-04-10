@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	"github.com/google/uuid"
@@ -20,7 +19,6 @@ type Shortcut struct {
 	Name     string `json:"name"`
 	Section  string `json:"section,omitempty"`
 	ImageURL string `json:"imageURL"`
-	OrderNum int    `json:"order"`
 }
 
 func (s Shortcut) SafeImageURL() template.URL {
@@ -141,7 +139,6 @@ func AddShortcut(url string, name string, section string, customImage string) (s
 		Name:     name,
 		Section:  section,
 		ImageURL: imageUrl,
-		OrderNum: len(shortcuts) + 1,
 	}
 	shortcuts = append(shortcuts, newShortcut)
 
@@ -189,7 +186,6 @@ func EditShortcut(id, url, name, section, customImage string) error {
 		return ErrShortcutNotFound
 	}
 
-	sortShortcutsByOrder(shortcuts)
 	return saveShortcuts(shortcuts)
 }
 
@@ -202,7 +198,6 @@ func RemoveShortcut(id string) error {
 	for i, shortcut := range shortcuts {
 		if shortcut.ID == id {
 			shortcuts = append(shortcuts[:i], shortcuts[i+1:]...)
-			reorderShortcutsAfterRemoval(shortcuts)
 			return saveShortcuts(shortcuts)
 		}
 	}
@@ -255,7 +250,7 @@ func ReorderShortcuts(items []OrderShortcutDto) error {
 	reordered := make(Shortcuts, 0, len(shortcuts))
 	seen := make(map[string]bool, len(shortcuts))
 
-	for i, item := range items {
+	for _, item := range items {
 		shortcut, exists := shortcutByID[item.ID]
 		if !exists {
 			return fmt.Errorf("no shortcut with ID: %s", item.ID)
@@ -264,23 +259,10 @@ func ReorderShortcuts(items []OrderShortcutDto) error {
 			return fmt.Errorf("duplicate id: %s", item.ID)
 		}
 
-		shortcut.OrderNum = i + 1
 		shortcut.Section = item.Section
 		reordered = append(reordered, shortcut)
 		seen[item.ID] = true
 	}
 
 	return saveShortcuts(reordered)
-}
-
-func sortShortcutsByOrder(shortcuts Shortcuts) {
-	sort.Slice(shortcuts, func(i, j int) bool {
-		return shortcuts[i].OrderNum < shortcuts[j].OrderNum
-	})
-}
-
-func reorderShortcutsAfterRemoval(shortcuts Shortcuts) {
-	for i := range shortcuts {
-		shortcuts[i].OrderNum = i + 1
-	}
 }
