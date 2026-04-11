@@ -35,11 +35,11 @@
     </div>
   </div>
 
-  <div class="grid gap-6">
+  <div class="grid gap-8 justify-center">
       {{ range .SectionGroups }}
         <div data-section-grid
              data-section-name="{{ .Name }}"
-             class="flex flex-wrap gap-4 justify-center">
+             class="flex max-w-4xl flex-wrap gap-4 justify-center">
             {{ range .Shortcuts }}
               <div class="relative"
                    data-shortcut-id="{{ .ID }}"
