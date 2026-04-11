@@ -29,7 +29,7 @@ type Shortcuts []Shortcut
 
 var DataFilePath = func() string {
 	configDir, err := os.UserConfigDir()
-	if err != nil {
+	if err != nil || os.Getenv("APP_ENV") == "dev" {
 		return "data/shortcuts.json"
 	}
 	return filepath.Join(configDir, "Homepage", "shortcuts.json")
