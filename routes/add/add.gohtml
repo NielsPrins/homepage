@@ -29,7 +29,7 @@
                   autocapitalize="on"
                   required
                   value="{{ .Name }}"
-                  {{ if not .AutofocusURL }}autofocus{{ end }}
+                  autofocus
           >
           <label
                   for="name"
@@ -48,7 +48,6 @@
                   autocapitalize="off"
                   required
                   value="{{ .URL }}"
-                  {{ if .AutofocusURL }}autofocus{{ end }}
           >
           <label
                   for="url"
