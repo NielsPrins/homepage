@@ -23,7 +23,7 @@ cat > "$MACOS_DIR/HomepageLauncher" <<'EOF'
 set -e
 
 SERVER_PATH="\${0%/*}/../Helpers/homepage-server"
-PLIST_PATH="\$HOME/Library/LaunchAgents/dev.nielsprins.homepage.agent.plist"
+PLIST_PATH="\$HOME/Library/LaunchAgents/com.nielsprins.homepage.agent.plist"
 
 mkdir -p "\${PLIST_PATH%/*}"
 
@@ -33,7 +33,7 @@ cat > "\$PLIST_PATH" <<PLIST
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>dev.nielsprins.homepage.agent</string>
+  <string>com.nielsprins.homepage.agent</string>
   <key>ProgramArguments</key>
   <array>
     <string>\$SERVER_PATH</string>
@@ -60,7 +60,7 @@ cat > "$CONTENTS_DIR/Info.plist" <<'EOF'
   <key>CFBundleIconFile</key>
   <string>AppIcon.png</string>
   <key>CFBundleIdentifier</key>
-  <string>dev.nielsprins.homepage.launcher</string>
+  <string>com.nielsprins.homepage.launcher</string>
   <key>CFBundleName</key>
   <string>Homepage</string>
   <key>CFBundlePackageType</key>
